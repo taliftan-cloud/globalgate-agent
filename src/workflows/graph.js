@@ -4,6 +4,7 @@ import { GraphState } from './state.js';
 import { runOrchestrator } from '../agents/orchestratorAgent.js';
 import { costCalculatorTool } from '../tools/costCalculatorTool.js';
 import { supplierAuditTool } from '../tools/supplierAuditTool.js';
+import { complianceRagTool } from '../tools/complianceRagTool.js';
 
 /**
  * graph.js
@@ -20,7 +21,7 @@ import { supplierAuditTool } from '../tools/supplierAuditTool.js';
  * human-approval interrupt belongs, sitting between "tools" and "agent".
  */
 
-const toolNode = new ToolNode([costCalculatorTool, supplierAuditTool]);
+const toolNode = new ToolNode([costCalculatorTool, supplierAuditTool, complianceRagTool]);
 
 async function agentNode(state) {
   try {
