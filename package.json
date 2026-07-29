@@ -1,0 +1,20 @@
+{
+  "name": "globalgate-agent",
+  "version": "0.1.0",
+  "description": "Multi-agent import/export operations assistant (supplier risk auditing + Incoterms/landed-cost calculation), orchestrated with LangGraph.js.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "@langchain/anthropic": "^0.3.14",
+    "@langchain/core": "^0.3.26",
+    "@langchain/langgraph": "^0.2.36",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "zod": "^3.23.8"
+  }
+}
