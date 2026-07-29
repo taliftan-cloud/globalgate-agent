@@ -6,6 +6,7 @@ import { costCalculatorTool } from '../tools/costCalculatorTool.js';
 import { supplierAuditTool } from '../tools/supplierAuditTool.js';
 import { complianceRagTool } from '../tools/complianceRagTool.js';
 import { humanApprovalNode } from '../guardrails/humanApprovalNode.js';
+import { withNodeLogging } from '../observability/logger.js';
 
 /**
  * graph.js
@@ -68,9 +69,9 @@ export function buildGraph() {
   const checkpointer = new MemorySaver();
 
   const graph = new StateGraph(GraphState)
-    .addNode('agent', agentNode)
-    .addNode('tools', toolNode)
-    .addNode('guardrail', humanApprovalNode)
+    .addNode('agent', withNodeLogging('agent', agentNode))
+    .addNode('tools', withNodeLogging('tools', toolNode))
+    .addNode('guardrail', withNodeLogging('guardrail', humanApprovalNode))
     .addEdge(START, 'agent')
     .addConditionalEdges('agent', shouldContinue, { tools: 'tools', [END]: END })
     .addEdge('tools', 'guardrail')
