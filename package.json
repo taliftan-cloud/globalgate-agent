@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "node --watch src/index.js"
+    "dev": "node --watch src/index.js",
+    "test": "node --test test/",
+    "eval": "node evals/toolSelectionEval.js"
   },
   "dependencies": {
     "@langchain/anthropic": "^0.3.14",
