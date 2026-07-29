@@ -1,6 +1,7 @@
 import { ChatAnthropic } from '@langchain/anthropic';
 import { costCalculatorTool } from '../tools/costCalculatorTool.js';
 import { supplierAuditTool } from '../tools/supplierAuditTool.js';
+import { complianceRagTool } from '../tools/complianceRagTool.js';
 import { config } from '../config/index.js';
 
 /**
@@ -22,15 +23,18 @@ import { config } from '../config/index.js';
  */
 
 const SYSTEM_PROMPT = `You are the operations assistant for GlobalGate, a platform that helps e-commerce \
-sellers import goods from China. You have two tools available:
+sellers import goods from China. You have three tools available:
 
 1. audit_supplier — checks a Chinese supplier's risk level (Green/Yellow/Red)
 2. calculate_landed_cost — resolves the correct Incoterm and computes the full landed cost of a shipment
+3. search_compliance_docs — searches a local knowledge base of compliance/regulatory documents (NNN \
+agreements, restricted-goods shipping rules, customs classification basics)
 
-Call a tool whenever the user's question requires supplier risk data or a cost calculation — don't guess or \
-fabricate numbers. If the user's request is missing information a tool needs (e.g. cost figures for a \
-calculation), ask a concise clarifying question instead of inventing values. Keep replies operational and \
-concise — this is a working tool, not a general-purpose chatbot.`;
+Call a tool whenever the user's question requires supplier risk data, a cost calculation, or a \
+regulatory/compliance answer — don't guess or fabricate numbers, and don't answer compliance questions \
+from memory when search_compliance_docs is available. If the user's request is missing information a \
+tool needs (e.g. cost figures for a calculation), ask a concise clarifying question instead of inventing \
+values. Keep replies operational and concise — this is a working tool, not a general-purpose chatbot.`;
 
 let cachedModel = null;
 
@@ -45,7 +49,7 @@ function getModel() {
       apiKey: config.anthropicApiKey,
       model: 'claude-sonnet-5',
       temperature: 0,
-    }).bindTools([costCalculatorTool, supplierAuditTool]);
+    }).bindTools([costCalculatorTool, supplierAuditTool, complianceRagTool]);
   }
   return cachedModel;
 }
